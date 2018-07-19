@@ -5,10 +5,15 @@ var path = require('path');
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 
-var port = process.env.PORT || 8080,
-    ip   = process.env.IP   || '0.0.0.0';
+var port = process.env.PORT || 8080 || 80,
+    ip   = process.env.IP   || '0.0.0.0' || '127.0.0.1';
 
-server.listen(port, ip);
+try {
+	server.listen(port, ip);
+} catch (err) {
+	console.log('Listening to socket connection requests cause ERROR at time ' + getDateTime() + ' on http://%s:%s', ip, port);
+	console.log(err.message);
+}
 console.log('Iclips-server is running since ' + getDateTime() + ' on http://%s:%s', ip, port);
 
 // Routing
@@ -23,6 +28,7 @@ var bus_id_list = [];
 io.on('connection', function (socket) {
 	
 	numUsers++;
+	console.log(numUsers + " clients connected!");
 	
 	socket.on('add user', function (username) {
 		//we have to make sure the this list always contains only one reference to the user
@@ -32,7 +38,7 @@ io.on('connection', function (socket) {
 		};
 		ListOfClients.push(client);
 		
-		var m = "Welcome " + username + ". You are now connected in real-time.";
+		var m = "Welcome " + username + ". You are now connected on I Clips in real-time communication.";
 	
 		// Send to current client
 		socket.emit('user added', m);
