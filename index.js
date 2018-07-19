@@ -13,7 +13,7 @@ var db = new sql.Database();
 var sqlstr = "CREATE TABLE log (id INTEGER PRIMARY KEY, time TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, message text);";
 db.run(sqlstr);
 
-server.listen(port, ip, function () {
+server.listen(process.env.PORT || 5000, ip, function () {
   console.log('Server running on http://%s:%s', ip, port);
   log(util.format('Server running on http://%s:%s', ip, port));
 });
