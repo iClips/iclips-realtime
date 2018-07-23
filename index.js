@@ -9,7 +9,7 @@ var port = process.env.PORT || 8080 || 80,
     ip   = process.env.IP   || '0.0.0.0' || '127.0.0.1';
 
 try {
-	server.listen(port, ip);
+	io.listen(process.env.PORT);
 } catch (err) {
 	console.log('Listening to socket connection requests cause ERROR at time ' + getDateTime() + ' on http://%s:%s', ip, port);
 	console.log(err.message);
